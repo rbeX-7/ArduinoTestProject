@@ -1,12 +1,16 @@
-
 #include <SoftwareSerial.h>
 
 SoftwareSerial mySerial(2,3);  //RX,TX
 String ssid ="Wye.net";
 String password="PesekNyembul";
 String data;
-String server = "192.168.0.102"; // www.example.com
-String uri = "/test.php";// our example is /esppost.php
+//for GET testing (local)
+//String server = "192.168.0.102"; // www.example.com
+//String uri = "/test.php";// our example is /esppost.php
+
+//for POST testing (online)
+String server = "ews.poscoictindonesia.co.id"; // www.example.com
+String uri = "/sensorread.php";// our example is /esppost.php
 
 bool isSending =false;
 
@@ -34,7 +38,6 @@ void connectWifi() {
     Serial.println("waiting response to AP");
     delay(1000);
   }
-  //delay(3000);
   if(mySerial.find("OK")) {
     Serial.println("Connected!");
   }else {
@@ -45,8 +48,7 @@ void connectWifi() {
 
 void loop() {
   if(isSending == false)
-    SendData_Get();
-  // put your main code here, to run repeatedly:
+    SendData_POST();
   delay(10000);
 }
 
@@ -128,7 +130,7 @@ void SendData_POST()
   int b = random(1,10);
   int c = random(1,10);
   mySerial.println("AT+CIPSTART=\"TCP\",\"" + server + "\",80");
-  delay(200);
+
   while(!mySerial.available()){
     Serial.println("Waiting TCP ready...");
     mySerial.println("AT+CIPCLOSE");
@@ -140,40 +142,25 @@ void SendData_POST()
    if( mySerial.find("OK")) {
     Serial.println("TCP connection ready");
   } 
-  //delay(1000);
-  data = (String)"a=" + a + "&b=" + b + "&c=" + c;
-  String postRequest = "POST " + uri + " HTTP/1.0\r\n";
-  int reqLength = postRequest.length()+2;
+  //data = (String)"a=" + a + "&b=" + b + "&c=" + c;
+  data = (String)"id=1&alrt=1&vib=1";
+  String postRequest = "POST " + uri + " HTTP/1.1\r\n";
+  int reqLength = postRequest.length();
   String postHost = "Host: " + server + "\r\n";
-  int hostLength = postHost.length()+2;
+  int hostLength = postHost.length();
   String postAccept = (String)"Accept: *" + "/" + "*\r\n";
-  int acceptLength = postAccept.length()+2;
+  int acceptLength = postAccept.length();
   String postLength = (String)"Content-Length: " + data.length() + "\r\n";
-  int postLth = postLength.length()+2;
+  int postLth = postLength.length();
   String postType = "Content-Type: application/x-www-form-urlencoded\r\n";
-  int typeLength = postType.length()+2;
+  int typeLength = postType.length();
   String postData = "\r\n" + data;  
-  int dataLength = postData.length()+2;
-  int totLength = (reqLength + hostLength + acceptLength + postLth + typeLength + dataLength);
-  
-  Serial.println("host : " + server);
-  Serial.println("uri : " + uri);
-  Serial.println("data : " + data);
+  int dataLength = postData.length();
+  int totLength = (reqLength + hostLength + acceptLength + postLth + typeLength + dataLength);   
   String sendCmd = "AT+CIPSEND=" + (String)totLength + "\r\n";
-  Serial.println(sendCmd);
   mySerial.print(sendCmd );
-  
-  while(!mySerial.available()){
-    Serial.println("Waiting for cnnection to server is established...");
-  }
-//  if(mySerial.available())
-//    {
-//      String tmpResp = mySerial.readString();
-//        Serial.println(tmpResp);
-//    }
    if(mySerial.find(">")) {
     Serial.println("Sending Data..."); 
-    //mySerial.print(postRequest);
     mySerial.print(postRequest);
     mySerial.print(postHost);
     mySerial.print(postAccept);
