@@ -6,6 +6,6 @@ using standard 4 pins adafruit finger print sensor
 3. RX
 4. GND
 
-Example code :
-enroll.ino -> for finger print registration
-reader.ini -> for reading existing finger print data on the sensor
+Example code : <br>
+enroll.ino -> for finger print registration  <br>
+reader.ini -> for reading existing finger print data on the sensor <br>
