@@ -29,7 +29,6 @@ void GetDateStuff(byte& Year, byte& Month, byte& Day, byte& DoW,
 	char InChar;
 	byte Temp1, Temp2;
 	char InString[20];
-  Serial.println("masuk...GetDateStuff");
 	byte j=0;
 	while (!GotString) {
 		if (Serial.available()) {
@@ -83,7 +82,6 @@ void loop() {
 	// If something is coming in on the serial line, it's
 	// a time correction so set the clock accordingly.
 	if (Serial.available()) {
-    Serial.println("masuk...");
 		GetDateStuff(Year, Month, Date, DoW, Hour, Minute, Second);
 
 		Clock.setClockMode(false);	// set to 24h
