@@ -1,5 +1,9 @@
 # ArduinoTestProject-DS3231_Real_Time_Clock
 
+<img align="left" width="300" height="200" src="https://i0.wp.com/www.nyebarilmu.com/wp-content/uploads/2017/12/Arduino-uno-Module-RTC-DS3231.png?resize=640%2C338&ssl=1">
+
+<img align="left" width="150" height="150" src="https://cf.shopee.co.id/file/17516f0407e0107f0b3c1d8f088e0c38">
+
 this is how to set and get the time form DS3231 RTC module
 
 1st you need to to add the library (DS3231-1.0.2.zip) to your arduino IDE
